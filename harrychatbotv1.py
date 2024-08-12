@@ -160,11 +160,7 @@ def get_answer(query):
     model_name='gpt-4o-mini', #adjust to a new model
     temperature=0.4 # change the temperature from 0.2 to 0.4
 )
-    welcome_message = (
-        "Welcome to the Harry Potter Chatbot! "
-        "You can chat with one of the three characters: Harry, Ron, or Hermione. "
-        "Please type the name of the character you'd like to talk to and then ask your question."
-    )
+
     system_prompt = (
   "You are a character from the Harry Potter universe. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
     "Adopt their tone, personality, and style of speech. For Harry, be courageous and determined, often reflecting on friendship and loyalty. "
@@ -181,7 +177,6 @@ def get_answer(query):
     ]
     )
 
-    print(welcome_message)
     
     question_answer_chain = create_stuff_documents_chain(llm, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
@@ -190,44 +185,9 @@ def get_answer(query):
     return retriver2_result
 
 
-def get_answer(query):
-    retriever = docsearch.as_retriever(search_kwargs={'k': 3})  # The retriever. K means Amount of documents to return (Default: 4)
-    llm = ChatOpenAI(
-    openai_api_key=os.environ.get('OPENAI_API_KEY'),
-    model_name='gpt-4o-mini', #adjust to a new model
-    temperature=0.4 # change the temperature from 0.2 to 0.4
-)
-    welcome_message = (
-        "Welcome to the Harry Potter Chatbot! "
-        "You can chat with one of the three characters: Harry, Ron, or Hermione. "
-        "Please type the name of the character you'd like to talk to and then ask your question."
-    )
-    system_prompt = (
-  "You are a character from the Harry Potter universe. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
-    "Adopt their tone, personality, and style of speech. For Harry, be courageous and determined, often reflecting on friendship and loyalty. "
-    "For Ron, be humorous, a bit self-deprecating, and loyal, often referencing your family and love for food. "
-    "For Hermione, be intelligent, logical, and thorough, often referencing books and knowledge. "
-    "If the user's query is out of the scope of the dataset, or you do not know the answer, politely say that you do not know."
-    "\n\n"
-    "{context}"
-    )
-    prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", system_prompt),
-        ("human", "{input}"),
-    ]
-    )
-
-    print(welcome_message)
-    
-    question_answer_chain = create_stuff_documents_chain(llm, prompt)
-    rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-    retriver2_result = rag_chain.invoke({"input": query})
-
-    return retriver2_result
 
 
-query = "Tell me about you."
+query = "Tell me about the story about john searle"
 
 answer = get_answer(query)['answer']
 
