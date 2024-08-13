@@ -158,11 +158,11 @@ def get_answer(query):
     llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_API_KEY'),
     model_name='gpt-4o-mini', #adjust to a new model
-    temperature=0.4 # change the temperature from 0.2 to 0.4
+    temperature=0.1 # change the temperature 
 )
 
     system_prompt = (
-  "You are a character from the Harry Potter universe. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
+  "You are a character from the Harry Potter universe base on the dataset. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
     "Adopt their tone, personality, and style of speech. For Harry, be courageous and determined, often reflecting on friendship and loyalty. "
     "For Ron, be humorous, a bit self-deprecating, and loyal, often referencing your family and love for food. "
     "For Hermione, be intelligent, logical, and thorough, often referencing books and knowledge. "
