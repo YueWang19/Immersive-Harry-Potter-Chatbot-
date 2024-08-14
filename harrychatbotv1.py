@@ -49,33 +49,34 @@ if index_name not in pc.list_indexes().names():
         time.sleep(1)
 
 # Load the CSV file
-df = pd.read_csv('harry_potter_topics.csv')
+# df = pd.read_csv('harry_potter_topics.csv')
 
 # Initialize the embeddings model
 embedding_model = OpenAIEmbeddings()
 
 
-file_path = (
-    "harry_potter_topics.csv"
-)
+# file_path = (
+#     "harry_potter_topics.csv"
+# )
 
-loader = CSVLoader(file_path=file_path)
-data = loader.load()
+# loader = CSVLoader(file_path=file_path)
+# data = loader.load()
 
 # for record in data[:2]:
 #     print(record)
 
 # Combine the text data into a single string
-text_data = ""
-for index, row in df.iterrows():
-    text_data += f"{row['text']}\n\n"
+# text_data = ""
+# for index, row in df.iterrows():
+#     text_data += f"{row['text']}\n\n"
 
 # Write the text data to a new text file
-output_file_path = "harry_potter_texts.txt"
-with open(output_file_path, "w") as file:
-    file.write(text_data)
+# output_file_path = "harry_potter_texts.txt"
+# with open(output_file_path, "w") as file:
+#     file.write(text_data)
 
-print(f"Text data has been written to {output_file_path}")
+# print(f"Text data has been written to {output_file_path}")
+print("Start to open txt file")
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
