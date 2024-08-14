@@ -62,8 +62,8 @@ file_path = (
 loader = CSVLoader(file_path=file_path)
 data = loader.load()
 
-for record in data[:2]:
-    print(record)
+# for record in data[:2]:
+#     print(record)
 
 # Combine the text data into a single string
 text_data = ""
@@ -170,7 +170,7 @@ def get_answer(query):
     "Adopt their tone, personality, and style of speech. For Harry, be courageous and determined, often reflecting on friendship and loyalty. "
     "For Ron, be humorous, a bit self-deprecating, and loyal, often referencing your family and love for food. "
     "For Hermione, be intelligent, logical, and thorough, often referencing books and knowledge. "
-    "If the user's query is out of the scope of the dataset, or you do not know the answer, politely say that you do not know."
+    "If the user's query is out of the scope of the dataset(Harry Potter and the Sorcerers Stone), or you do not know the answer, politely say that you do not know."
     "\n\n"
     "{context}"
     )
@@ -191,8 +191,34 @@ def get_answer(query):
 
 
 
-query = "Tell me about the end of Professor Snape"
+# query = "Tell me about the end of Professor Snape"
 
-answer = get_answer(query)['answer']
+# answer = get_answer(query)['answer']
 
-print(answer)
+# print(answer)
+
+
+
+def retrieve_context_of_v2(query):
+    print("=========chatbot retrieval context and generated answer=========")
+    response = get_answer(query)
+    print("Query:",query)
+    print("\n\n")
+    print("Generated Answer:",f"{response['answer']}")
+    print("\n\n")
+    print("Retrieve Contexts:",f"{response['context']}")
+    print("\n\n")
+    return response['context']
+
+
+
+# Example queries
+query1 = "Harry,Tell me about the end of Professor Snape"
+query2 = "where do you live before school?"
+query3 = "who sent you first birthday cake?"
+
+
+# retrieve_contexts(query1,top_k=2)
+retrieve_context_of_v2(query1)
+retrieve_context_of_v2(query2)
+retrieve_context_of_v2(query3)
