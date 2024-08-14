@@ -80,7 +80,11 @@ print(f"Text data has been written to {output_file_path}")
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # Load example document
-with open("harry_potter_texts.txt") as f:
+# with open("harry_potter_texts.txt") as f:
+# Load book1 document
+
+with open("01 Harry Potter and the Sorcerers Stone.txt") as f:
+
     harry_potter_texts = f.read()
 
 text_splitter = RecursiveCharacterTextSplitter(
@@ -104,9 +108,9 @@ text_splitter = RecursiveCharacterTextSplitter(
     is_separator_regex=False,
 )
 documents = text_splitter.create_documents([harry_potter_texts])
-print(documents[0])
-print(documents[1])
-print(documents)
+# print(documents[0])
+# print(documents[1])
+# print(documents)
 
 text_splitter.split_text(harry_potter_texts)[:3]
 
@@ -128,7 +132,7 @@ vectorstore_from_docs = PineconeVectorStore.from_documents(
 
 # vectorstore.add_documents(docs)
 
-query = "Who harry potter?"
+query = "Who is harry potter?"
 vectorstore.similarity_search(query)
 
 # Create vector store
@@ -158,7 +162,7 @@ def get_answer(query):
     llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_API_KEY'),
     model_name='gpt-4o-mini', #adjust to a new model
-    temperature=0.1 # change the temperature 
+    temperature=0 # change the temperature 
 )
 
     system_prompt = (
@@ -187,7 +191,7 @@ def get_answer(query):
 
 
 
-query = "Tell me about the story about john searle"
+query = "Tell me about the end of Professor Snape"
 
 answer = get_answer(query)['answer']
 
