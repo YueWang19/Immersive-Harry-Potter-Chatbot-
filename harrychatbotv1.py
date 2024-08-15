@@ -162,32 +162,35 @@ for ids in index.list(namespace=namespace):
 from openai import OpenAI
 client = OpenAI()
 
-completion = client.chat.completions.create(
-    model="ft:gpt-3.5-turbo-0125:personal::9wK1cery", 
-    messages=[
-        {"role": "system", "content": "You are a helpful assistant knowledgeable about Harry Potter, particularly the first book, 'Harry Potter and the Sorcerer's Stone'."},
-        {"role": "user", "content": "Did Sirius escape Azkaban?"}
-    ]
-)
-print(completion.choices[0].message)
+# completion = client.chat.completions.create(
+#     model="ft:gpt-3.5-turbo-0125:personal::9wK1cery", 
+#     messages=[
+#         {"role": "system", "content": "You are a helpful assistant knowledgeable about Harry Potter, particularly the first book, 'Harry Potter and the Sorcerer's Stone'."},
+#         {"role": "user", "content": "Did Sirius escape Azkaban?"}
+#     ]
+# )
+# print(completion.choices[0].message)
 
 def get_answer(query):
     retriever = docsearch.as_retriever(search_kwargs={'k': 3})  # The retriever. K means Amount of documents to return (Default: 4)
     fine_tuned_model = ChatOpenAI(
     # openai_api_key=os.environ.get('OPENAI_API_KEY'),
-    # model_name='gpt-4o-mini', #adjust to a new model
-    temperature=0, # change the temperature 
-    model_name='ft:gpt-3.5-turbo-0125:personal::9wK1cery',
+    model_name='gpt-4o-mini', #adjust to a new model
+    temperature=0.2, # change the temperature 
+    # model_name='ft:gpt-3.5-turbo-0125:personal::9wK1cery',
 )
 
     system_prompt = (
-  "You are a character from the Harry Potter universe base on the dataset. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
+    "You are a character from the Harry Potter universe base on the dataset. The user will choose between Harry, Ron, or Hermione, and you must respond as the chosen character. "
     "Adopt their tone, personality, and style of speech. For Harry, be courageous and determined, often reflecting on friendship and loyalty. "
     "For Ron, be humorous, a bit self-deprecating, and loyal, often referencing your family and love for food. "
     "For Hermione, be intelligent, logical, and thorough, often referencing books and knowledge. "
     "Answer using the context retrieved from the dataset"
     "If the user's query is out of the scope of the dataset(Harry Potter and the Sorcerers Stone), or you do not know the answer, politely say that you do not know."
-    "Do not speculate or provide information not included in the dataset"
+    "If the context retrieved does not fully answer the question, try to provide the best answer based on the retrieved content. "
+    "If you still cannot answer the question, politely say that you do not know."
+    # "Do not speculate or provide information not included in the dataset"
+
     "\n\n"
     "{context}"
     )
@@ -207,56 +210,6 @@ def get_answer(query):
 
 
 
-# def get_answer(query):
-#     # Separate character name from the actual query
-#     if ',' in query:
-#         character, actual_query = query.split(',', 1)
-#         character = character.strip()
-#         actual_query = actual_query.strip()
-#     else:
-#         character = "Unknown"
-#         actual_query = query.strip()
-
-#     retriever = docsearch.as_retriever(search_kwargs={'k': 3})
-#     llm = ChatOpenAI(
-#         openai_api_key=os.environ.get('OPENAI_API_KEY'),
-#         model_name='gpt-4o-mini',
-#         temperature=0  # Set temperature to 0 for more deterministic output
-#     )
-
-#     # Ensure the system prompt directs the model to only use the dataset
-#     system_prompt = (
-#         f"You are {character} from the Harry Potter universe based on the dataset (Harry Potter and the Sorcerer's Stone). "
-#         "You must respond only based on the dataset provided. "
-#         "If the query is out of the dataset's scope or you do not know the answer, politely say that you do not know. "
-#         "Do not speculate or provide information not included in the dataset.\n\n"
-#         "{context}"
-#     )
-    
-#     prompt = ChatPromptTemplate.from_messages(
-#         [
-#             ("system", system_prompt),
-#             ("human", actual_query),  # Use the actual query after stripping the character name
-#         ]
-#     )
-
-#     question_answer_chain = create_stuff_documents_chain(llm, prompt)
-#     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
-#     retriver2_result = rag_chain.invoke({"input": actual_query})
-
-#     return retriver2_result
-
-
-
-
-
-# query = "Tell me about the end of Professor Snape"
-
-# answer = get_answer(query)['answer']
-
-# print(answer)
-
-
 
 def retrieve_context_of_v2(query):
     print("=========chatbot retrieval context and generated answer=========")
@@ -272,9 +225,9 @@ def retrieve_context_of_v2(query):
 
 
 # Example queries
-query1 = "Harry,Tell me about the end of Professor Snape"
+query1 = "Did Sirius escape Azkaban?"
 # query2 = "where do you live before school?"
-query2 = "Do you hate Sirius Black?"
+query2 = "Tell me about the end of Professor Snape"
 
 query3 = "who sent you first birthday cake?"
 
