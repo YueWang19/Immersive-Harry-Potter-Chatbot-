@@ -30,15 +30,4 @@ print("2. Start a fine-tuning job========",jobresponse)
 job_status = client.fine_tuning.jobs.retrieve(jobresponse.id)  # Replace 'ftjob-abc123' with your actual job ID
 print("3. Job status print========",job_status)
 
-# # Start the fine-tuning process
-# fine_tune_response = openai.FineTune.create(
-#     training_file=file_id,
-#     model="gpt-4o-mini",  # Replace with the base model you want to fine-tune
-#     n_epochs=4  # Number of training epochs
-# )
-# fine_tune_id = fine_tune_response['id']
-# print(f"Fine-tuning started with ID: {fine_tune_id}")
 
-# # Optionally, monitor the fine-tuning process
-# status = openai.FineTune.retrieve(id=fine_tune_id)
-# print(f"Fine-tuning status: {status['status']}")

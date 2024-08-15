@@ -1,6 +1,7 @@
 import streamlit as st
 from harrychatbotv1 import get_answer
 
+
 # Streamlit app starts here
 st.title("Harry Potter Chatbot")
 
@@ -49,7 +50,9 @@ if st.session_state.selected_character:
             query_with_character = f"{st.session_state.selected_character}: {user_input}"
             
             # Get the chatbot's response
+            # response = get_answer(query_with_character)['answer']
             response = get_answer(query_with_character)['answer']
+
             
             # Add the chatbot's response to the chat history
             bot_message = f"{st.session_state.selected_character}: {response}"

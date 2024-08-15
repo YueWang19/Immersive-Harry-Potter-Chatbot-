@@ -158,12 +158,26 @@ for ids in index.list(namespace=namespace):
     )
     # print("first version query print", query)
 
+# Using the fine-tuned model
+from openai import OpenAI
+client = OpenAI()
+
+completion = client.chat.completions.create(
+    model="ft:gpt-3.5-turbo-0125:personal::9wK1cery", 
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant knowledgeable about Harry Potter, particularly the first book, 'Harry Potter and the Sorcerer's Stone'."},
+        {"role": "user", "content": "Did Sirius escape Azkaban?"}
+    ]
+)
+print(completion.choices[0].message)
+
 def get_answer(query):
     retriever = docsearch.as_retriever(search_kwargs={'k': 3})  # The retriever. K means Amount of documents to return (Default: 4)
-    llm = ChatOpenAI(
-    openai_api_key=os.environ.get('OPENAI_API_KEY'),
-    model_name='gpt-4o-mini', #adjust to a new model
-    temperature=0 # change the temperature 
+    fine_tuned_model = ChatOpenAI(
+    # openai_api_key=os.environ.get('OPENAI_API_KEY'),
+    # model_name='gpt-4o-mini', #adjust to a new model
+    temperature=0, # change the temperature 
+    model_name='ft:gpt-3.5-turbo-0125:personal::9wK1cery',
 )
 
     system_prompt = (
@@ -185,11 +199,13 @@ def get_answer(query):
     )
 
     
-    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    question_answer_chain = create_stuff_documents_chain(fine_tuned_model, prompt)
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
     retriver2_result = rag_chain.invoke({"input": query})
 
     return retriver2_result
+
+
 
 # def get_answer(query):
 #     # Separate character name from the actual query
@@ -267,3 +283,4 @@ query3 = "who sent you first birthday cake?"
 retrieve_context_of_v2(query1)
 retrieve_context_of_v2(query2)
 retrieve_context_of_v2(query3)
+
