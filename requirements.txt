@@ -12,3 +12,4 @@ pinecone-client
 jupyter
 streamlit
 pandas
+openai
